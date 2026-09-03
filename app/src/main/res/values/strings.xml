@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Digital Level</string>
+    <string name="main_title">Digital Level App</string>
+    <string name="main_description">Measure tilt and level surfaces.</string>
+    <string name="last_measurement">Last Measurement:</string>
+    <string name="btn_open_level">Open Level</string>
+    <string name="btn_view_history">View History</string>
+    <string name="btn_about">About</string>
+    <string name="dark_mode">Dark Mode</string>
+
+    <string name="level_title">Level</string>
+    <string name="overall_tilt">Overall Tilt: %1$s</string>
+    <string name="x_angle">X Angle: %1$s</string>
+    <string name="y_angle">Y Angle: %1$s</string>
+    <string name="level_status">Status: %1$s</string>
+    <string name="ambient_light">Light: %1$s lux (%2$s)</string>
+    <string name="calibration_status">Calibration: %1$s</string>
+
+    <string name="btn_save_measurement">Save Measurement</string>
+    <string name="btn_calibrate">Calibrate</string>
+    <string name="btn_reset_calibration">Reset Calibration</string>
+
+    <string name="history_title">History</string>
+    <string name="no_measurements">No measurements found.</string>
+    <string name="btn_clear_all">Clear All</string>
+
+    <string name="details_title">Measurement Details</string>
+    <string name="date_time">Date: %1$s</string>
+    <string name="btn_use_reference">Use As Reference</string>
+    <string name="btn_delete">Delete</string>
+
+    <string name="na_tilt">Tilt: N/A</string>
+    <string name="na_status">Status: N/A</string>
+</resources>

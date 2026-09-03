@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvItemStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="LEVEL"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvItemTilt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Overall Tilt: 0.0°"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvItemLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Light: 50 lux"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:id="@+id/tvItemDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="2023-01-01 12:00"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginTop="4dp"
+            android:gravity="end"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

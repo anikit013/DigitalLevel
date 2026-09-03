@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvDetailsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDetOverallTilt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Overall Tilt: 0.0°"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDetXAngle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="X Angle: 0.0°"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvDetYAngle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Y Angle: 0.0°"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvDetLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Light: 50 lux"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvDetStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Status: LEVEL"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDetDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Date: 2023-01-01 12:00"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnUseReference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_use_reference"/>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_delete"
+        android:backgroundTint="@color/purple_200"/>
+
+</LinearLayout>
