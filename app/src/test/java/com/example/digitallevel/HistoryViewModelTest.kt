@@ -93,4 +93,25 @@ class HistoryViewModelTest {
         list = viewModel.measurements.first()
         assertEquals(0, list.size)
     }
+
+    @Test
+    fun testDeleteByIdAndModeField() = runTest {
+        val m1 = MeasurementEntity(id = 1, timestamp = 1000L, angleX = 0f, angleY = 0f, overallTilt = 0f, lightLevel = 100f, status = "LEVEL", mode = "FLAT")
+        val m2 = MeasurementEntity(id = 2, timestamp = 2000L, angleX = 2f, angleY = 2f, overallTilt = 2.8f, lightLevel = 200f, status = "SLIGHTLY TILTED", mode = "EDGE")
+
+        fakeDao.insert(m1)
+        fakeDao.insert(m2)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        var list = viewModel.measurements.first()
+        assertEquals("FLAT", list.find { it.id == 1 }?.mode)
+        assertEquals("EDGE", list.find { it.id == 2 }?.mode)
+
+        viewModel.deleteMeasurementById(1)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        list = viewModel.measurements.first()
+        assertEquals(1, list.size)
+        assertEquals(2, list[0].id)
+    }
 }

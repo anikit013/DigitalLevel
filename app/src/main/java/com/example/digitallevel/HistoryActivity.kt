@@ -30,7 +30,10 @@ class HistoryActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            Toast.makeText(this, "Measurement deleted", Toast.LENGTH_SHORT).show()
+            val isDeleted = result.data?.getBooleanExtra(Constants.EXTRA_DELETED, false) ?: true
+            if (isDeleted) {
+                Toast.makeText(this, "Measurement deleted", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -38,6 +41,10 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
         adapter = MeasurementAdapter { measurement ->
             val intent = Intent(this, MeasurementDetailsActivity::class.java).apply {
@@ -49,14 +56,23 @@ class HistoryActivity : AppCompatActivity() {
         binding.rvMeasurements.layoutManager = LinearLayoutManager(this)
         binding.rvMeasurements.adapter = adapter
 
+        binding.cardEmptyState.setOnClickListener {
+            startActivity(Intent(this, LevelActivity::class.java))
+        }
+
         lifecycleScope.launch {
             viewModel.measurements.collect { measurements ->
                 if (measurements.isEmpty()) {
                     binding.rvMeasurements.visibility = View.GONE
-                    binding.tvEmptyState.visibility = View.VISIBLE
+                    binding.tvSummaryCount.visibility = View.GONE
+                    binding.cardEmptyState.visibility = View.VISIBLE
                 } else {
                     binding.rvMeasurements.visibility = View.VISIBLE
-                    binding.tvEmptyState.visibility = View.GONE
+                    binding.tvSummaryCount.visibility = View.VISIBLE
+                    binding.cardEmptyState.visibility = View.GONE
+
+                    val countText = "${measurements.size} Saved Measurement${if (measurements.size == 1) "" else "s"}"
+                    binding.tvSummaryCount.text = countText
                     adapter.submitList(measurements)
                 }
             }
@@ -64,8 +80,8 @@ class HistoryActivity : AppCompatActivity() {
 
         binding.btnClearAll.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Clear History")
-                .setMessage("Are you sure you want to delete all measurements?")
+                .setTitle(getString(R.string.clear_history_dialog_title))
+                .setMessage(getString(R.string.clear_history_dialog_message))
                 .setPositiveButton("Clear") { _, _ ->
                     viewModel.deleteAllMeasurements()
                     Toast.makeText(this@HistoryActivity, "History cleared", Toast.LENGTH_SHORT).show()

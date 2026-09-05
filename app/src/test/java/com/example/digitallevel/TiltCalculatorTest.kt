@@ -1,5 +1,6 @@
 package com.example.digitallevel
 
+import com.example.digitallevel.sensor.MeasurementMode
 import com.example.digitallevel.sensor.TiltCalculator
 import com.example.digitallevel.sensor.TiltData
 import com.example.digitallevel.util.Constants
@@ -15,11 +16,53 @@ class TiltCalculatorTest {
     @Test
     fun testRestingFlatPosition() {
         val calculator = TiltCalculator(alpha = 0f) // Immediate response
-        val result = calculator.process(floatArrayOf(0f, 0f, 9.81f))
+        val result = calculator.process(floatArrayOf(0f, 0f, 9.81f), MeasurementMode.FLAT)
 
         assertEquals(0f, result.xTilt, 0.1f)
         assertEquals(0f, result.yTilt, 0.1f)
         assertEquals(0f, result.overallTilt, 0.1f)
+    }
+
+    @Test
+    fun testEdgeModeUprightVertical() {
+        val calculator = TiltCalculator(alpha = 0f)
+        // Device standing upright vertically (gravity along Y-axis)
+        val result = calculator.process(floatArrayOf(0f, 9.81f, 0f), MeasurementMode.EDGE)
+
+        assertEquals(0f, result.xTilt, 0.1f)
+        assertEquals(0f, result.yTilt, 0.1f)
+        assertEquals(0f, result.overallTilt, 0.1f)
+    }
+
+    @Test
+    fun testEdgeModeTilted() {
+        val calculator = TiltCalculator(alpha = 0f)
+        val gravity = 9.81f
+        val rad30 = Math.toRadians(30.0)
+        val zVal = (gravity * sin(rad30)).toFloat()
+        val yVal = (gravity * cos(rad30)).toFloat()
+
+        // Device tilted 30 degrees in EDGE mode
+        val result = calculator.process(floatArrayOf(0f, yVal, zVal), MeasurementMode.EDGE)
+
+        assertEquals(0f, result.xTilt, 0.1f)
+        assertEquals(30f, result.yTilt, 0.1f)
+        assertEquals(30f, result.overallTilt, 0.1f)
+    }
+
+    @Test
+    fun testLockOffsetMath() {
+        val calculator = TiltCalculator(alpha = 0f)
+        val (dispX, dispY) = calculator.calculateRelativeTilt(currentX = 15f, currentY = 10f, lockX = 5f, lockY = 2f)
+
+        assertEquals(10f, dispX, 0.001f)
+        assertEquals(8f, dispY, 0.001f)
+
+        val currentData = TiltData(xTilt = 15f, yTilt = 10f, overallTilt = 18.02f)
+        val lockedData = calculator.applyLockOffset(currentData, lockX = 5f, lockY = 2f)
+
+        assertEquals(10f, lockedData.xTilt, 0.001f)
+        assertEquals(8f, lockedData.yTilt, 0.001f)
     }
 
     @Test
@@ -87,23 +130,15 @@ class TiltCalculatorTest {
 
     @Test
     fun testLowPassFilterSmoothing() {
-        // alpha = 0.8 => newFiltered = 0.8 * oldFiltered + 0.2 * input
         val calculator = TiltCalculator(alpha = 0.8f)
 
-        // Initial state: lastX=0, lastY=0, lastZ=9.81
-        // Step 1: input X=10.0
         val step1 = calculator.process(floatArrayOf(10.0f, 0f, 9.81f))
-        // lastX = 0.8*0 + 0.2*10.0 = 2.0
         assertTrue("Step 1 xTilt should smooth response", step1.xTilt > 0f && step1.xTilt < 90f)
 
-        // Step 2: input X=10.0
         val step2 = calculator.process(floatArrayOf(10.0f, 0f, 9.81f))
-        // lastX = 0.8*2.0 + 0.2*10.0 = 3.6
         assertTrue("Step 2 xTilt should increase towards target", step2.xTilt > step1.xTilt)
 
-        // Step 3: input X=10.0
         val step3 = calculator.process(floatArrayOf(10.0f, 0f, 9.81f))
-        // lastX = 0.8*3.6 + 0.2*10.0 = 4.88
         assertTrue("Step 3 xTilt should continue increasing", step3.xTilt > step2.xTilt)
     }
 
@@ -117,7 +152,6 @@ class TiltCalculatorTest {
     @Test
     fun testLowPassFilterAlphaOneFullRetention() {
         val calculator = TiltCalculator(alpha = 1.0f)
-        // Initial state is resting flat (lastX=0, lastY=0, lastZ=9.81)
         val result = calculator.process(floatArrayOf(9.81f, 9.81f, 0f))
         assertEquals(0f, result.xTilt, 0.1f)
         assertEquals(0f, result.yTilt, 0.1f)

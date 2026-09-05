@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Digital Level">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-09-03T16:37:36.212485944Z">
+        <DropdownSelection timestamp="2026-09-04T20:58:17.022331108Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=HA26N91R" />
+              <DeviceId pluginId="Wireless" identifier="serviceName=adb-HA26N91R-LW6pxW" />
             </handle>
           </Target>
         </DropdownSelection>

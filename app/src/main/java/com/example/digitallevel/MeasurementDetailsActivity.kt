@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.digitallevel.data.MeasurementEntity
@@ -20,6 +21,7 @@ class MeasurementDetailsActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MEASUREMENT_ID = Constants.EXTRA_MEASUREMENT_ID
+        const val EXTRA_DELETED = Constants.EXTRA_DELETED
     }
 
     private lateinit var binding: ActivityMeasurementDetailsBinding
@@ -39,6 +41,14 @@ class MeasurementDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "Invalid measurement ID", Toast.LENGTH_SHORT).show()
             finish()
             return
+        }
+
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnBackAction.setOnClickListener {
+            finish()
         }
 
         viewModel.loadMeasurement(measurementId)
@@ -66,33 +76,46 @@ class MeasurementDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnDelete.setOnClickListener {
-            viewModel.deleteCurrentMeasurement {
-                val resultIntent = Intent().apply {
-                    putExtra(EXTRA_MEASUREMENT_ID, measurementId)
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.delete_measurement_dialog_title))
+                .setMessage(getString(R.string.delete_measurement_dialog_message))
+                .setPositiveButton("Delete") { _, _ ->
+                    viewModel.deleteCurrentMeasurement {
+                        val resultIntent = Intent().apply {
+                            putExtra(EXTRA_DELETED, true)
+                            putExtra(EXTRA_MEASUREMENT_ID, measurementId)
+                        }
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    }
                 }
-                setResult(RESULT_OK, resultIntent)
-                finish()
-            }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
     private fun displayMeasurementDetails(measurement: MeasurementEntity) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
 
-        binding.tvDetOverallTilt.text = getString(
-            R.string.overall_tilt,
-            String.format(Locale.getDefault(), "%.1f°", measurement.overallTilt)
-        )
-        binding.tvDetXAngle.text = getString(
-            R.string.x_angle,
-            String.format(Locale.getDefault(), "%.1f°", measurement.angleX)
-        )
-        binding.tvDetYAngle.text = getString(
-            R.string.y_angle,
-            String.format(Locale.getDefault(), "%.1f°", measurement.angleY)
-        )
-        binding.tvDetLight.text = String.format(Locale.getDefault(), "Light: %.1f lux", measurement.lightLevel)
-        binding.tvDetStatus.text = getString(R.string.level_status, measurement.status)
-        binding.tvDetDateTime.text = getString(R.string.date_time, dateFormat.format(Date(measurement.timestamp)))
+        val formattedStatus = when (measurement.status.uppercase(Locale.getDefault())) {
+            "LEVEL", "✓ LEVEL" -> "✓ LEVEL"
+            "SLIGHTLY TILTED" -> "SLIGHTLY TILTED"
+            "TILTED" -> "TILTED"
+            else -> measurement.status.uppercase(Locale.getDefault())
+        }
+
+        binding.tvDetStatus.text = formattedStatus
+        binding.tvDetOverallTilt.text = String.format(Locale.getDefault(), "%.2f°", measurement.overallTilt)
+        binding.tvDetXAngle.text = String.format(Locale.getDefault(), "X Axis: %.2f°", measurement.angleX)
+        binding.tvDetYAngle.text = String.format(Locale.getDefault(), "Y Axis: %.2f°", measurement.angleY)
+
+        val modeLabel = if (measurement.mode.equals("EDGE", ignoreCase = true)) {
+            getString(R.string.mode_edge)
+        } else {
+            getString(R.string.mode_flat)
+        }
+        binding.tvDetMode.text = getString(R.string.mode_display, modeLabel)
+        binding.tvDetLight.text = String.format(Locale.getDefault(), "Ambient Light: %.0f lux", measurement.lightLevel)
+        binding.tvDetDateTime.text = dateFormat.format(Date(measurement.timestamp))
     }
 }

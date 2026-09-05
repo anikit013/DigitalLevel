@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.digitallevel.data.MeasurementEntity
 import com.example.digitallevel.data.MeasurementRepository
 import com.example.digitallevel.data.PreferencesManager
+import com.example.digitallevel.sensor.MeasurementMode
 import com.example.digitallevel.util.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,8 @@ data class LevelUiState(
     val status: String = "LEVEL",
     val lightLevel: Float = 0f,
     val isAccelerometerAvailable: Boolean = true,
-    val isLightSensorAvailable: Boolean = true
+    val isLightSensorAvailable: Boolean = true,
+    val currentMode: MeasurementMode = MeasurementMode.FLAT
 )
 
 class LevelViewModel(
@@ -42,9 +44,10 @@ class LevelViewModel(
 
     init {
         preferencesManager?.let { prefs ->
-            val offX = prefs.offsetX
-            val offY = prefs.offsetY
-            val isCal = prefs.isCalibrated
+            val mode = _uiState.value.currentMode
+            val offX = prefs.getOffsetX(mode)
+            val offY = prefs.getOffsetY(mode)
+            val isCal = prefs.isCalibratedForMode(mode)
             _uiState.value = _uiState.value.copy(
                 offsetX = offX,
                 offsetY = offY,
@@ -52,6 +55,21 @@ class LevelViewModel(
             )
             recalculateState()
         }
+    }
+
+    fun setMeasurementMode(mode: MeasurementMode) {
+        _uiState.value = _uiState.value.copy(currentMode = mode)
+        preferencesManager?.let { prefs ->
+            val offX = prefs.getOffsetX(mode)
+            val offY = prefs.getOffsetY(mode)
+            val isCal = prefs.isCalibratedForMode(mode)
+            _uiState.value = _uiState.value.copy(
+                offsetX = offX,
+                offsetY = offY,
+                isCalibrated = isCal
+            )
+        }
+        recalculateState()
     }
 
     fun updateSensorAvailability(accelAvailable: Boolean, lightAvailable: Boolean) {
@@ -74,12 +92,13 @@ class LevelViewModel(
     }
 
     fun setCalibrationOffset(x: Float, y: Float) {
+        val mode = _uiState.value.currentMode
         _uiState.value = _uiState.value.copy(
             offsetX = x,
             offsetY = y,
             isCalibrated = true
         )
-        preferencesManager?.saveCalibration(x, y)
+        preferencesManager?.saveCalibrationForMode(x, y, mode)
         recalculateState()
     }
 
@@ -90,12 +109,13 @@ class LevelViewModel(
     }
 
     fun resetCalibration() {
+        val mode = _uiState.value.currentMode
         _uiState.value = _uiState.value.copy(
             offsetX = 0f,
             offsetY = 0f,
             isCalibrated = false
         )
-        preferencesManager?.resetCalibration()
+        preferencesManager?.resetCalibrationForMode(mode)
         recalculateState()
     }
 
@@ -130,7 +150,8 @@ class LevelViewModel(
             angleY = state.calibratedY,
             overallTilt = state.overallTilt,
             lightLevel = state.lightLevel,
-            status = state.status
+            status = state.status,
+            mode = state.currentMode.name
         )
 
         viewModelScope.launch {

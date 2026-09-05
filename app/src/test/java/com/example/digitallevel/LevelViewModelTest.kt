@@ -5,6 +5,7 @@ import com.example.digitallevel.data.MeasurementDao
 import com.example.digitallevel.data.MeasurementEntity
 import com.example.digitallevel.data.MeasurementRepository
 import com.example.digitallevel.data.PreferencesManager
+import com.example.digitallevel.sensor.MeasurementMode
 import com.example.digitallevel.ui.LevelViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -270,5 +271,39 @@ class LevelViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertEquals(1L, savedId)
+    }
+
+    @Test
+    fun testMeasurementModeSwitchingAndCalibration() {
+        val testPrefs = TestSharedPreferences()
+        val prefsManager = PreferencesManager(testPrefs)
+        val vmWithPrefs = LevelViewModel(repository, prefsManager)
+
+        // Default mode is FLAT
+        assertEquals(MeasurementMode.FLAT, vmWithPrefs.uiState.value.currentMode)
+
+        // Calibrate FLAT mode
+        vmWithPrefs.processTilt(5.0f, 2.0f)
+        vmWithPrefs.calibrateCurrentPosition()
+        assertEquals(5.0f, vmWithPrefs.uiState.value.offsetX, 0.01f)
+        assertTrue(vmWithPrefs.uiState.value.isCalibrated)
+
+        // Switch to EDGE mode
+        vmWithPrefs.setMeasurementMode(MeasurementMode.EDGE)
+        assertEquals(MeasurementMode.EDGE, vmWithPrefs.uiState.value.currentMode)
+        assertEquals(0.0f, vmWithPrefs.uiState.value.offsetX, 0.01f)
+        assertFalse(vmWithPrefs.uiState.value.isCalibrated)
+
+        // Calibrate EDGE mode
+        vmWithPrefs.processTilt(10.0f, 4.0f)
+        vmWithPrefs.calibrateCurrentPosition()
+        assertEquals(10.0f, vmWithPrefs.uiState.value.offsetX, 0.01f)
+        assertTrue(vmWithPrefs.uiState.value.isCalibrated)
+
+        // Switch back to FLAT mode and verify FLAT offset restored
+        vmWithPrefs.setMeasurementMode(MeasurementMode.FLAT)
+        assertEquals(MeasurementMode.FLAT, vmWithPrefs.uiState.value.currentMode)
+        assertEquals(5.0f, vmWithPrefs.uiState.value.offsetX, 0.01f)
+        assertTrue(vmWithPrefs.uiState.value.isCalibrated)
     }
 }

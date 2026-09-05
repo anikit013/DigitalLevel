@@ -12,5 +12,6 @@ data class MeasurementEntity(
     val angleY: Float,
     val overallTilt: Float,
     val lightLevel: Float,
-    val status: String
+    val status: String,
+    val mode: String = "FLAT"
 )

@@ -39,12 +39,21 @@ class MeasurementAdapter(
         private val binding: ItemMeasurementBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        private val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
 
         fun bind(item: MeasurementEntity) {
-            binding.tvItemStatus.text = item.status
-            binding.tvItemTilt.text = String.format(Locale.getDefault(), "Overall Tilt: %.1f°", item.overallTilt)
-            binding.tvItemLight.text = String.format(Locale.getDefault(), "Light: %.1f lux", item.lightLevel)
+            val formattedStatus = when (item.status.uppercase(Locale.getDefault())) {
+                "LEVEL", "✓ LEVEL" -> "✓ LEVEL"
+                "SLIGHTLY TILTED" -> "SLIGHTLY TILTED"
+                "TILTED" -> "TILTED"
+                else -> item.status.uppercase(Locale.getDefault())
+            }
+
+            binding.tvItemStatus.text = formattedStatus
+            binding.tvItemTilt.text = String.format(Locale.getDefault(), "%.2f°", item.overallTilt)
+            binding.tvItemXY.text = String.format(Locale.getDefault(), "X: %.2f°   Y: %.2f°", item.angleX, item.angleY)
+            binding.tvItemMode.text = item.mode.uppercase(Locale.getDefault())
+            binding.tvItemLight.text = String.format(Locale.getDefault(), "%.0f lux", item.lightLevel)
             binding.tvItemDateTime.text = dateFormat.format(Date(item.timestamp))
 
             binding.root.setOnClickListener {

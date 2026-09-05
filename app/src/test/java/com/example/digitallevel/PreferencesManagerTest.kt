@@ -2,6 +2,7 @@ package com.example.digitallevel
 
 import android.content.SharedPreferences
 import com.example.digitallevel.data.PreferencesManager
+import com.example.digitallevel.sensor.MeasurementMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -129,9 +130,20 @@ class PreferencesManagerTest {
     @Test
     fun testDefaultValues() {
         assertFalse(preferencesManager.isDarkMode)
+        assertTrue(preferencesManager.keepScreenAwake)
+        assertTrue(preferencesManager.levelFeedbackEnabled)
         assertEquals(0f, preferencesManager.offsetX, 0.001f)
         assertEquals(0f, preferencesManager.offsetY, 0.001f)
         assertFalse(preferencesManager.isCalibrated)
+    }
+
+    @Test
+    fun testKeepScreenAwakeAndFeedbackToggles() {
+        preferencesManager.keepScreenAwake = false
+        assertFalse(preferencesManager.keepScreenAwake)
+
+        preferencesManager.levelFeedbackEnabled = false
+        assertFalse(preferencesManager.levelFeedbackEnabled)
     }
 
     @Test
@@ -162,6 +174,24 @@ class PreferencesManagerTest {
     }
 
     @Test
+    fun testSeparateFlatAndEdgeModeCalibrations() {
+        preferencesManager.saveCalibrationForMode(1.0f, 2.0f, MeasurementMode.FLAT)
+        preferencesManager.saveCalibrationForMode(5.0f, 6.0f, MeasurementMode.EDGE)
+
+        assertEquals(1.0f, preferencesManager.getOffsetX(MeasurementMode.FLAT), 0.001f)
+        assertEquals(2.0f, preferencesManager.getOffsetY(MeasurementMode.FLAT), 0.001f)
+        assertTrue(preferencesManager.isCalibratedForMode(MeasurementMode.FLAT))
+
+        assertEquals(5.0f, preferencesManager.getOffsetX(MeasurementMode.EDGE), 0.001f)
+        assertEquals(6.0f, preferencesManager.getOffsetY(MeasurementMode.EDGE), 0.001f)
+        assertTrue(preferencesManager.isCalibratedForMode(MeasurementMode.EDGE))
+
+        preferencesManager.resetCalibrationForMode(MeasurementMode.EDGE)
+        assertTrue(preferencesManager.isCalibratedForMode(MeasurementMode.FLAT))
+        assertFalse(preferencesManager.isCalibratedForMode(MeasurementMode.EDGE))
+    }
+
+    @Test
     fun testResetCalibration() {
         preferencesManager.saveCalibration(5.0f, 2.5f)
         assertTrue(preferencesManager.isCalibrated)
@@ -177,11 +207,15 @@ class PreferencesManagerTest {
     fun testPersistenceAcrossInstances() {
         preferencesManager.saveCalibration(1.5f, 0.5f)
         preferencesManager.isDarkMode = true
+        preferencesManager.keepScreenAwake = false
+        preferencesManager.levelFeedbackEnabled = false
 
         val newManagerInstance = PreferencesManager(fakeSharedPreferences)
         assertEquals(1.5f, newManagerInstance.offsetX, 0.001f)
         assertEquals(0.5f, newManagerInstance.offsetY, 0.001f)
         assertTrue(newManagerInstance.isCalibrated)
         assertTrue(newManagerInstance.isDarkMode)
+        assertFalse(newManagerInstance.keepScreenAwake)
+        assertFalse(newManagerInstance.levelFeedbackEnabled)
     }
 }
