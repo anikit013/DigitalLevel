@@ -7,6 +7,15 @@
     <color name="level_blue">#00B0FF</color>
     <color name="level_blue_variant">#0088FF</color>
 
+    <!-- Semantic Color Tokens -->
+    <color name="text_primary_light">#1A1C1E</color>
+    <color name="text_secondary_light">#44474E</color>
+    <color name="divider_light">#DCE2E9</color>
+
+    <color name="text_primary_dark">#F0F4F8</color>
+    <color name="text_secondary_dark">#A0ABBB</color>
+    <color name="divider_dark">#2A364F</color>
+
     <!-- Dark Mode Colors -->
     <color name="dark_bg">#121212</color>
     <color name="dark_surface">#1E1E1E</color>
@@ -16,15 +25,15 @@
     <color name="dark_green_bg">#0A192F</color>
     <color name="dark_green_stroke">#1E3A8A</color>
     <color name="dark_on_primary">#FFFFFF</color>
-    <color name="dark_on_bg">#FFFFFF</color>
-    <color name="dark_on_surface">#FFFFFF</color>
+    <color name="dark_on_bg">#E2E2E6</color>
+    <color name="dark_on_surface">#E2E2E6</color>
 
     <!-- Light Mode Colors -->
-    <color name="light_bg">#F5F5F5</color>
+    <color name="light_bg">#F8F9FA</color>
     <color name="light_surface">#FFFFFF</color>
     <color name="light_on_primary">#FFFFFF</color>
-    <color name="light_on_bg">#121212</color>
-    <color name="light_on_surface">#121212</color>
+    <color name="light_on_bg">#1A1C1E</color>
+    <color name="light_on_surface">#1A1C1E</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

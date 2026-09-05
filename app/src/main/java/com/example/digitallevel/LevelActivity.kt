@@ -7,10 +7,12 @@ import android.hardware.SensorEventListener
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.digitallevel.data.PreferencesManager
 import com.example.digitallevel.databinding.ActivityLevelBinding
@@ -54,12 +56,21 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val app = application as DigitalLevelApplication
+        preferencesManager = app.preferencesManager
+
+        val targetMode = if (preferencesManager.isDarkMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityLevelBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val app = application as DigitalLevelApplication
-        preferencesManager = app.preferencesManager
 
         sensorHelper = SensorManagerHelper(this)
         viewModel.updateSensorAvailability(
@@ -72,14 +83,6 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
         // Header Back Button
         binding.btnBack.setOnClickListener {
             finish()
-        }
-
-        // Header Settings Button
-        binding.btnSettings.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
         }
 
         // Segmented Mode Selector
@@ -130,6 +133,15 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
             Toast.makeText(this, "Calibrated to current position", Toast.LENGTH_SHORT).show()
         }
 
+        // Tools Toggles
+        binding.switchLightMeter.setOnCheckedChangeListener { _, isChecked ->
+            binding.cardLightMeterPanel.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+
+        binding.switchDigitalMeter.setOnCheckedChangeListener { _, isChecked ->
+            binding.cardDigitalMeterPanel.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+
         // Primary Action: SAVE MEASUREMENT
         binding.btnSaveMeasurement.setOnClickListener {
             viewModel.saveMeasurement { id ->
@@ -176,10 +188,10 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         event ?: return
-        if (isHoldActive) return
 
         when (event.sensor.type) {
             Sensor.TYPE_ACCELEROMETER -> {
+                if (isHoldActive) return
                 val rawTilt = tiltCalculator.process(event.values, currentMode)
                 lastRawX = rawTilt.xTilt
                 lastRawY = rawTilt.yTilt
@@ -214,6 +226,10 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
             binding.tvYAngle.text = getString(R.string.not_available_na)
             binding.tvLevelStatus.text = getString(R.string.sensor_unavailable)
             binding.tvLevelSubtitle.text = getString(R.string.ambient_light_unavailable)
+
+            binding.tvDigitalAngle.text = getString(R.string.not_available_na)
+            binding.tvDigitalStatus.text = getString(R.string.sensor_unavailable)
+            binding.tvDigitalMode.text = state.currentMode.name
         } else {
             binding.levelView.updateTilt(state.calibratedX, state.calibratedY, isHoldActive, isLockActive)
 
@@ -238,6 +254,11 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
                 }
             }
 
+            // Digital Meter Panel
+            binding.tvDigitalAngle.text = String.format(Locale.getDefault(), "%.2f°", state.overallTilt)
+            binding.tvDigitalStatus.text = state.status
+            binding.tvDigitalMode.text = state.currentMode.name
+
             // Trigger haptic feedback on transition to LEVEL
             val currentStatus = state.status
             if ((previousStatus != null) && (previousStatus != "LEVEL") && (currentStatus == "LEVEL")) {
@@ -246,6 +267,22 @@ class LevelActivity : AppCompatActivity(), SensorEventListener {
                 }
             }
             previousStatus = currentStatus
+        }
+
+        // Light Meter Panel
+        if (!state.isLightSensorAvailable) {
+            binding.layoutLightData.visibility = View.GONE
+            binding.progressLightIntensity.visibility = View.GONE
+            binding.tvLightSensorUnavailable.visibility = View.VISIBLE
+            binding.tvLightSensorUnavailable.text = getString(R.string.light_sensor_unavailable)
+        } else {
+            binding.layoutLightData.visibility = View.VISIBLE
+            binding.progressLightIntensity.visibility = View.VISIBLE
+            binding.tvLightSensorUnavailable.visibility = View.GONE
+
+            binding.tvLuxReadout.text = String.format(Locale.getDefault(), "%.0f lx", state.lightLevel)
+            binding.tvLightCategory.text = viewModel.getLightCategory(state.lightLevel)
+            binding.progressLightIntensity.progress = state.lightLevel.toInt().coerceIn(0, 1000)
         }
     }
 

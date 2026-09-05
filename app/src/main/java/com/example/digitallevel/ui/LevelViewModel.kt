@@ -142,6 +142,16 @@ class LevelViewModel(
         }
     }
 
+    fun getLightCategory(lux: Float): String {
+        return when {
+            lux < 10f -> "Dark"
+            lux < 50f -> "Dim"
+            lux < 500f -> "Normal"
+            lux < 1000f -> "Bright"
+            else -> "Very Bright"
+        }
+    }
+
     fun saveMeasurement(onSaved: (Long) -> Unit) {
         val state = _uiState.value
         val entity = MeasurementEntity(

@@ -15,22 +15,23 @@
         android:clipToPadding="false">
 
         <!-- Header -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content">
+
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/btnSettings"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tvAppTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/header_title"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -40,16 +41,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/header_subtitle"
-                    android:textColor="#AAAAAA"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
             </LinearLayout>
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_settings"
+
+            <ImageButton
+                android:id="@+id/btnSettings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/settings_title"
-                app:tint="#AAAAAA" />
-        </LinearLayout>
+                android:src="@drawable/ic_settings"
+                app:tint="?attr/colorOnSurface" />
+        </RelativeLayout>
 
         <!-- Level Preview & Status -->
         <LinearLayout
@@ -81,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/status_desc_ready"
-                android:textColor="#AAAAAA"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -92,7 +98,7 @@
             android:layout_height="72dp"
             android:layout_marginTop="32dp"
             android:text="@string/btn_start_level"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:backgroundTint="@color/primary_blue"
@@ -142,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="32dp"
-            android:background="#333333" />
+            android:background="?attr/colorOutlineVariant" />
 
         <!-- Last Measurement Section -->
         <LinearLayout
@@ -155,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/last_measurement_title"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -165,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/no_measurements_yet"
-                android:textColor="#AAAAAA"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -181,7 +187,7 @@
                     android:id="@+id/tvLastTilt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSurface"
                     tools:text="Overall Tilt: 0.4°" />
 
                 <TextView
@@ -189,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSurface"
                     tools:text="X Axis: 0.2°" />
 
                 <TextView
@@ -197,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSurface"
                     tools:text="Y Axis: 0.3°" />
 
                 <TextView
@@ -213,7 +219,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textColor="#888888"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     tools:text="Date: Oct 24, 2023 14:30" />
 
@@ -225,60 +231,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
-            android:background="#333333" />
-
-        <!-- Settings Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_title"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchDarkMode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/dark_mode"
-                android:textColor="@color/white"
-                app:thumbTint="@color/switch_thumb_color"
-                app:trackTint="@color/switch_track_color" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchKeepScreenAwake"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/keep_screen_awake"
-                android:textColor="@color/white"
-                app:thumbTint="@color/switch_thumb_color"
-                app:trackTint="@color/switch_track_color" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchLevelFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/level_feedback"
-                android:textColor="@color/white"
-                app:thumbTint="@color/switch_thumb_color"
-                app:trackTint="@color/switch_track_color" />
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="24dp"
-            android:background="#333333" />
+            android:background="?attr/colorOutlineVariant" />
 
         <!-- About Section -->
         <LinearLayout
@@ -299,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/about_row"
-                android:textColor="#AAAAAA"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
 
             <ImageView
@@ -307,7 +260,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/ic_chevron_right"
                 android:contentDescription="@string/btn_about"
-                app:tint="#AAAAAA" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
         </LinearLayout>
 

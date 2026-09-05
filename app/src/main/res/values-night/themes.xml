@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.DigitalLevel" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary_blue</item>
-        <item name="colorOnPrimary">@color/dark_on_primary</item>
-        <item name="android:colorBackground">@color/dark_bg</item>
-        <item name="colorSurface">@color/dark_surface</item>
-        <item name="colorOnBackground">@color/dark_on_bg</item>
-        <item name="colorOnSurface">@color/dark_on_surface</item>
+        <item name="colorPrimary">#007AFF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOnBackground">#E2E2E6</item>
+        <item name="colorOnSurface">#E2E2E6</item>
+        <item name="colorOnSurfaceVariant">#A0ABBB</item>
+        <item name="colorOutline">#2A364F</item>
+        <item name="colorOutlineVariant">#2A364F</item>
     </style>
 </resources>

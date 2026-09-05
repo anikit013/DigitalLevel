@@ -67,7 +67,7 @@
                 android:id="@+id/tvItemTilt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 tools:text="0.42°" />
@@ -78,7 +78,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/label_overall_tilt"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             tools:text="X: 0.12°   Y: 0.40°" />
 
@@ -104,7 +104,7 @@
                 android:id="@+id/tvItemLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 tools:text="742 lux" />
 
@@ -117,7 +117,7 @@
                 android:id="@+id/tvItemDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 tools:text="03 Sep 2026, 19:20" />
         </LinearLayout>

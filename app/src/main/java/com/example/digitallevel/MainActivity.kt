@@ -42,40 +42,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val app = application as DigitalLevelApplication
+        preferencesManager = app.preferencesManager
+
+        val targetMode = if (preferencesManager.isDarkMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val app = application as DigitalLevelApplication
-        preferencesManager = app.preferencesManager
-
-        // Initialize switch states
-        binding.switchDarkMode.isChecked = preferencesManager.isDarkMode
-        binding.switchKeepScreenAwake.isChecked = preferencesManager.keepScreenAwake
-        binding.switchLevelFeedback.isChecked = preferencesManager.levelFeedbackEnabled
-
         // Apply screen awake flag based on preference
         updateKeepScreenAwakeFlag(preferencesManager.keepScreenAwake)
 
-        // Dark Mode switch
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            preferencesManager.isDarkMode = isChecked
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-
-        // Keep Screen Awake switch
-        binding.switchKeepScreenAwake.setOnCheckedChangeListener { _, isChecked ->
-            preferencesManager.keepScreenAwake = isChecked
-            updateKeepScreenAwakeFlag(isChecked)
-        }
-
-        // Level Feedback switch
-        binding.switchLevelFeedback.setOnCheckedChangeListener { _, isChecked ->
-            preferencesManager.levelFeedbackEnabled = isChecked
+        // Wire Settings gear button
+        binding.btnSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         // Action Buttons
@@ -116,6 +104,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateKeepScreenAwakeFlag(preferencesManager.keepScreenAwake)
+
+        // Re-sync dark mode setting if returned from SettingsActivity
+        val targetMode = if (preferencesManager.isDarkMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
+        }
+    }
+
     private fun updateKeepScreenAwakeFlag(keepAwake: Boolean) {
         if (keepAwake) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -123,8 +126,6 @@ class MainActivity : AppCompatActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
-
-
 
     private fun updateLastMeasurementCard(last: MeasurementEntity) {
         binding.layoutLastMeasurementData.visibility = View.VISIBLE

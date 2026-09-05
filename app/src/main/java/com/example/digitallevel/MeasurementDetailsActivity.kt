@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.digitallevel.data.MeasurementEntity
 import com.example.digitallevel.databinding.ActivityMeasurementDetailsBinding
@@ -32,6 +33,16 @@ class MeasurementDetailsActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val app = application as DigitalLevelApplication
+        val targetMode = if (app.preferencesManager.isDarkMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityMeasurementDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)

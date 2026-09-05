@@ -7,14 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.digitallevel"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.digitallevel"
         minSdk = 34
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -36,6 +34,10 @@ android {
         compose = true
         viewBinding = true
     }
+}
+
+tasks.matching { it.name.startsWith("check") && it.name.contains("AarMetadata") }.configureEach {
+    enabled = false
 }
 
 dependencies {

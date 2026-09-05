@@ -28,9 +28,15 @@
 
     <string name="settings_title">Settings</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_desc">Use dark theme throughout the application</string>
     <string name="keep_screen_awake">Keep Screen Awake</string>
+    <string name="keep_screen_awake_desc">Prevent the display from turning off while using the level</string>
     <string name="level_feedback">Level Feedback</string>
+    <string name="level_feedback_desc">Provide haptic feedback when the level reaches LEVEL</string>
 
+    <string name="about_title">About Digital Level</string>
+    <string name="about_version">Version 1.0</string>
+    <string name="about_details">Mobile Applications Development Project • Smartphone Inclinometer</string>
     <string name="about_row">About Digital Level • Version 1.0</string>
     <string name="about_dialog_title">About Digital Level</string>
     <string name="about_dialog_message">Digital Level App v1.0\n\nMeasures tilt angles and ambient light levels using on-device sensors.</string>
@@ -66,6 +72,11 @@
     <string name="ambient_light_unavailable">Ambient Light: N/A • Sensor unavailable</string>
     <string name="sensor_unavailable">UNAVAILABLE</string>
     <string name="not_available_na">N/A</string>
+
+    <string name="section_tools">TOOLS</string>
+    <string name="tool_light_meter">Light Meter</string>
+    <string name="tool_digital_meter">Digital Meter</string>
+    <string name="light_sensor_unavailable">Light sensor unavailable</string>
 
     <string name="history_title">MEASUREMENT HISTORY</string>
     <string name="history_header_title">MEASUREMENT HISTORY</string>

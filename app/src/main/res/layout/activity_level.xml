@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_bg"
+    android:background="?android:attr/colorBackground"
     android:fillViewport="true"
     android:fitsSystemWindows="true">
 
@@ -23,7 +23,7 @@
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:id="@+id/tvHeaderTitle"
@@ -31,24 +31,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/header_title"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
-            app:layout_constraintEnd_toStartOf="@id/btnSettings"
-            app:layout_constraintStart_toEndOf="@id/btnBack"
-            app:layout_constraintTop_toTopOf="@id/btnBack" />
-
-        <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/settings_title"
-            android:src="@drawable/ic_settings"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <!-- Segmented Mode Selector -->
         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -70,10 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mode_flat"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/dark_surface"
+                android:textColor="?attr/colorOnSurface"
+                app:backgroundTint="?attr/colorSurface"
                 app:cornerRadius="24dp"
-                app:strokeColor="@color/primary_blue" />
+                app:strokeColor="?attr/colorPrimary" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnModeEdge"
@@ -82,10 +71,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mode_edge"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/dark_surface"
+                android:textColor="?attr/colorOnSurface"
+                app:backgroundTint="?attr/colorSurface"
                 app:cornerRadius="24dp"
-                app:strokeColor="@color/primary_blue" />
+                app:strokeColor="?attr/colorPrimary" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Custom Digital Level View Graphic -->
@@ -98,7 +87,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toggleModeGroup" />
 
-        <!-- Angle Values Grid (3 equal dark cards/boxes) -->
+        <!-- Angle Values Grid (3 equal cards/boxes) -->
         <LinearLayout
             android:id="@+id/layoutAngleGrid"
             android:layout_width="match_parent"
@@ -114,10 +103,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/dark_card"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#333333"
+                app:strokeColor="?attr/colorOutlineVariant"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -131,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_x_angle"
-                        android:textColor="#AAAAAA"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp" />
 
                     <TextView
@@ -139,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="0.5°" />
@@ -153,10 +142,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/dark_card"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#333333"
+                app:strokeColor="?attr/colorOutlineVariant"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -170,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_y_angle"
-                        android:textColor="#AAAAAA"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp" />
 
                     <TextView
@@ -178,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="-1.2°" />
@@ -192,10 +181,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/dark_card"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#333333"
+                app:strokeColor="?attr/colorOutlineVariant"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -209,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_overall"
-                        android:textColor="#AAAAAA"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp" />
 
                     <TextView
@@ -217,7 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textColor="@color/primary_blue"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="1.3°" />
@@ -231,11 +220,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/dark_blue_bg"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@id/layoutAngleGrid"
-            app:strokeColor="@color/dark_blue_stroke"
+            app:strokeColor="?attr/colorOutlineVariant"
             app:strokeWidth="1dp">
 
             <LinearLayout
@@ -250,7 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/primary_blue"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:text="✓ LEVEL" />
@@ -262,7 +251,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:text="@string/subtitle_level"
-                    android:textColor="#80D8FF"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp"
                     tools:text="Surface is level" />
             </LinearLayout>
@@ -286,16 +275,16 @@
                 android:layout_marginEnd="4dp"
                 android:paddingVertical="12dp"
                 android:text="@string/btn_hold"
-                android:textColor="@color/primary_blue"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:backgroundTint="@color/dark_surface"
+                app:backgroundTint="?attr/colorSurface"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_hold"
                 app:iconGravity="textStart"
                 app:iconPadding="4dp"
                 app:iconSize="18dp"
-                app:iconTint="@color/primary_blue"
-                app:strokeColor="@color/primary_blue"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -307,16 +296,16 @@
                 android:layout_marginHorizontal="4dp"
                 android:paddingVertical="12dp"
                 android:text="@string/btn_lock"
-                android:textColor="@color/primary_blue"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="13sp"
-                app:backgroundTint="@color/dark_surface"
+                app:backgroundTint="?attr/colorSurface"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_lock"
                 app:iconGravity="textStart"
                 app:iconPadding="4dp"
                 app:iconSize="18dp"
-                app:iconTint="@color/primary_blue"
-                app:strokeColor="@color/primary_blue"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -328,18 +317,241 @@
                 android:layout_marginStart="4dp"
                 android:paddingVertical="12dp"
                 android:text="@string/btn_calibrate"
-                android:textColor="@color/primary_blue"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="12sp"
-                app:backgroundTint="@color/dark_surface"
+                app:backgroundTint="?attr/colorSurface"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_calibrate"
                 app:iconGravity="textStart"
                 app:iconPadding="4dp"
                 app:iconSize="18dp"
-                app:iconTint="@color/primary_blue"
-                app:strokeColor="@color/primary_blue"
+                app:iconTint="?attr/colorPrimary"
+                app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1.5dp" />
         </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/dividerTools"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="?attr/colorOutlineVariant"
+            app:layout_constraintTop_toBottomOf="@id/layoutControlsRow" />
+
+        <!-- TOOLS Section Header -->
+        <TextView
+            android:id="@+id/tvToolsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/section_tools"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerTools" />
+
+        <!-- Tools Switches Container -->
+        <LinearLayout
+            android:id="@+id/layoutToolsSwitches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvToolsHeader">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchLightMeter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:checked="false"
+                android:text="@string/tool_light_meter"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackTint="@color/switch_track_color" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchDigitalMeter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:checked="false"
+                android:text="@string/tool_digital_meter"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackTint="@color/switch_track_color" />
+        </LinearLayout>
+
+        <!-- Light Meter Panel -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLightMeterPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutToolsSwitches"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:strokeWidth="1dp"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvLightMeterTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tool_light_meter"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/layoutLightData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvLuxReadout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="742 lx" />
+
+                    <TextView
+                        android:id="@+id/tvLightCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded_badge"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="Bright" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressLightIntensity"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="12dp"
+                    android:max="1000"
+                    android:progressBackgroundTint="?attr/colorOutlineVariant"
+                    android:progressTint="?attr/colorPrimary"
+                    tools:progress="742" />
+
+                <TextView
+                    android:id="@+id/tvLightSensorUnavailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/light_sensor_unavailable"
+                    android:textColor="?attr/colorError"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Digital Meter Panel -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDigitalMeterPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/cardLightMeterPanel"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:strokeWidth="1dp"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvDigitalMeterTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tool_digital_meter"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvDigitalAngle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        tools:text="0.42°" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvDigitalStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_badge"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            tools:text="LEVEL" />
+
+                        <TextView
+                            android:id="@+id/tvDigitalMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="12sp"
+                            tools:text="FLAT" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Bottom Primary Button -->
         <com.google.android.material.button.MaterialButton
@@ -350,18 +562,18 @@
             android:layout_marginBottom="16dp"
             android:paddingVertical="14dp"
             android:text="@string/btn_save_measurement"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/primary_blue"
+            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_save"
             app:iconGravity="textStart"
             app:iconPadding="8dp"
             app:iconSize="22dp"
-            app:iconTint="@color/black"
+            app:iconTint="?attr/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutControlsRow"
+            app:layout_constraintTop_toBottomOf="@id/cardDigitalMeterPanel"
             app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

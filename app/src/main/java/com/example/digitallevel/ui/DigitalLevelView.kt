@@ -1,6 +1,7 @@
 package com.example.digitallevel.ui
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
@@ -165,8 +166,13 @@ class DigitalLevelView @JvmOverloads constructor(
         calculateDimensions(w, h)
     }
 
+    private var lastNightMode: Boolean? = null
+
     private fun calculateDimensions(w: Int, h: Int) {
         if (w <= 0 || h <= 0) return
+
+        val isNightMode = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        lastNightMode = isNightMode
 
         val minDim = min(w, h).toFloat()
         val pad = minDim * 0.04f
@@ -174,29 +180,52 @@ class DigitalLevelView @JvmOverloads constructor(
         housingRect.set(pad, pad, w - pad, h - pad)
         housingCornerRadius = minDim * 0.08f
 
-        housingShader = LinearGradient(
-            pad, pad, w - pad, h - pad,
-            intArrayOf(
-                Color.parseColor("#2C2F36"),
-                Color.parseColor("#1C1E23"),
-                Color.parseColor("#121316")
-            ),
-            floatArrayOf(0f, 0.5f, 1f),
-            Shader.TileMode.CLAMP
-        )
+        if (isNightMode) {
+            housingShader = LinearGradient(
+                pad, pad, w - pad, h - pad,
+                intArrayOf(
+                    Color.parseColor("#2C2F36"),
+                    Color.parseColor("#1C1E23"),
+                    Color.parseColor("#121316")
+                ),
+                floatArrayOf(0f, 0.5f, 1f),
+                Shader.TileMode.CLAMP
+            )
+            housingBorderShader = LinearGradient(
+                pad, pad, w - pad, h - pad,
+                intArrayOf(
+                    Color.parseColor("#5A5F6D"),
+                    Color.parseColor("#2E3138"),
+                    Color.parseColor("#6E7484"),
+                    Color.parseColor("#222429")
+                ),
+                floatArrayOf(0f, 0.35f, 0.7f, 1f),
+                Shader.TileMode.CLAMP
+            )
+        } else {
+            housingShader = LinearGradient(
+                pad, pad, w - pad, h - pad,
+                intArrayOf(
+                    Color.parseColor("#EAF0F6"),
+                    Color.parseColor("#D5DCE5"),
+                    Color.parseColor("#C2C9D4")
+                ),
+                floatArrayOf(0f, 0.5f, 1f),
+                Shader.TileMode.CLAMP
+            )
+            housingBorderShader = LinearGradient(
+                pad, pad, w - pad, h - pad,
+                intArrayOf(
+                    Color.parseColor("#FFFFFF"),
+                    Color.parseColor("#B0B8C5"),
+                    Color.parseColor("#E0E6EF"),
+                    Color.parseColor("#9AA2B0")
+                ),
+                floatArrayOf(0f, 0.35f, 0.7f, 1f),
+                Shader.TileMode.CLAMP
+            )
+        }
         housingPaint.shader = housingShader
-
-        housingBorderShader = LinearGradient(
-            pad, pad, w - pad, h - pad,
-            intArrayOf(
-                Color.parseColor("#5A5F6D"),
-                Color.parseColor("#2E3138"),
-                Color.parseColor("#6E7484"),
-                Color.parseColor("#222429")
-            ),
-            floatArrayOf(0f, 0.35f, 0.7f, 1f),
-            Shader.TileMode.CLAMP
-        )
         housingBorderPaint.shader = housingBorderShader
 
         val tubeThickness = minDim * 0.12f
@@ -269,17 +298,31 @@ class DigitalLevelView @JvmOverloads constructor(
         bullsEyeMiddleRadius = bullsEyeInnerRadius * 0.52f
         bullsEyeOuterRefRadius = bullsEyeInnerRadius * 0.82f
 
-        bullsEyeRingShader = RadialGradient(
-            bullsEyeCenterX, bullsEyeCenterY, bullsEyeOuterRadius,
-            intArrayOf(
-                Color.parseColor("#151618"),
-                Color.parseColor("#383B42"),
-                Color.parseColor("#1E2024"),
-                Color.parseColor("#4A4E58")
-            ),
-            floatArrayOf(0f, 0.82f, 0.92f, 1f),
-            Shader.TileMode.CLAMP
-        )
+        if (isNightMode) {
+            bullsEyeRingShader = RadialGradient(
+                bullsEyeCenterX, bullsEyeCenterY, bullsEyeOuterRadius,
+                intArrayOf(
+                    Color.parseColor("#151618"),
+                    Color.parseColor("#383B42"),
+                    Color.parseColor("#1E2024"),
+                    Color.parseColor("#4A4E58")
+                ),
+                floatArrayOf(0f, 0.82f, 0.92f, 1f),
+                Shader.TileMode.CLAMP
+            )
+        } else {
+            bullsEyeRingShader = RadialGradient(
+                bullsEyeCenterX, bullsEyeCenterY, bullsEyeOuterRadius,
+                intArrayOf(
+                    Color.parseColor("#D0D5DF"),
+                    Color.parseColor("#F5F7FA"),
+                    Color.parseColor("#C4C9D4"),
+                    Color.parseColor("#E2E6EE")
+                ),
+                floatArrayOf(0f, 0.82f, 0.92f, 1f),
+                Shader.TileMode.CLAMP
+            )
+        }
         bullsEyeRingPaint.shader = bullsEyeRingShader
 
         bullsEyeGlassShader = RadialGradient(
@@ -295,6 +338,9 @@ class DigitalLevelView @JvmOverloads constructor(
             Shader.TileMode.CLAMP
         )
 
+        targetLinePaint.color = if (isNightMode) Color.parseColor("#1C1E20") else Color.parseColor("#2C3038")
+        dashedCirclePaint.color = if (isNightMode) Color.parseColor("#26000000") else Color.parseColor("#33000000")
+
         // Badge placement
         val badgeW = minDim * 0.22f
         val badgeH = minDim * 0.08f
@@ -307,7 +353,8 @@ class DigitalLevelView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (housingRect.width() <= 0f) {
+        val currentNightMode = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        if (housingRect.width() <= 0f || lastNightMode != currentNightMode) {
             if (width > 0 && height > 0) {
                 calculateDimensions(width, height)
             } else {

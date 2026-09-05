@@ -306,4 +306,26 @@ class LevelViewModelTest {
         assertEquals(5.0f, vmWithPrefs.uiState.value.offsetX, 0.01f)
         assertTrue(vmWithPrefs.uiState.value.isCalibrated)
     }
+
+    @Test
+    fun testLightMeterCategories() {
+        assertEquals("Dark", viewModel.getLightCategory(0f))
+        assertEquals("Dark", viewModel.getLightCategory(5f))
+        assertEquals("Dim", viewModel.getLightCategory(10f))
+        assertEquals("Dim", viewModel.getLightCategory(45f))
+        assertEquals("Normal", viewModel.getLightCategory(50f))
+        assertEquals("Normal", viewModel.getLightCategory(350f))
+        assertEquals("Bright", viewModel.getLightCategory(500f))
+        assertEquals("Bright", viewModel.getLightCategory(742f))
+        assertEquals("Very Bright", viewModel.getLightCategory(1000f))
+        assertEquals("Very Bright", viewModel.getLightCategory(2500f))
+    }
+
+    @Test
+    fun testProcessLightUpdatesState() {
+        viewModel.processLight(742f)
+        val state = viewModel.uiState.value
+        assertEquals(742f, state.lightLevel, 0.01f)
+        assertEquals("Bright", viewModel.getLightCategory(state.lightLevel))
+    }
 }

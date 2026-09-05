@@ -31,6 +31,7 @@
         <activity android:name=".LevelActivity" android:label="@string/level_title" />
         <activity android:name=".HistoryActivity" android:label="@string/history_title" />
         <activity android:name=".MeasurementDetailsActivity" android:label="@string/details_title" />
+        <activity android:name=".SettingsActivity" android:label="@string/settings_title" />
 
     </application>
 
